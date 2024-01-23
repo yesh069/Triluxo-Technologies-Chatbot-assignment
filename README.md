@@ -1,7 +1,7 @@
 Certainly! Here's the README content in Markdown format:
 
 
-# ChatGPT Flask Chatbot
+#  Flask Chatbot
 
 A simple chatbot built using Flask, Transformers, and Faiss for course recommendations.
 
