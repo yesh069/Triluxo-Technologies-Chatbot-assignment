@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Flask Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat-container {
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #chat-messages {
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        #user-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        #user-query {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        #send-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat-container">
+        <div id="chat-header">
+            DEBALES TASK CHATBOT
+        </div>
+        <div id="chat-messages">
+            
+        </div>
+        <div id="user-input">
+            <input type="text" id="user-query" placeholder="Type your message...">
+            <button id="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var userQuery = document.getElementById('user-query').value;
+        
+            // Display user message
+            displayMessage('user', userQuery);
+        
+            fetch(`/recommendations?query=${encodeURIComponent(userQuery)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Received data:", data);
+        
+                if ('response' in data && 'additional_data' in data) {
+                    var chatbotResponse = data.response;
+        
+                    displayMessage('chatbot', chatbotResponse);
+        
+
+                } else {
+                    console.error("Invalid data format:", data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+        function displayMessage(sender, message) {
+            var chatMessages = document.getElementById('chat-messages');
+            var messageDiv = document.createElement('div');
+            messageDiv.className = sender;
+        
+            var messageContent = document.createElement('p');
+        
+            if (typeof message === 'object') {
+                messageContent.textContent = JSON.stringify(message);
+            } else {
+                messageContent.innerHTML = message;
+            }
+        
+            messageDiv.appendChild(messageContent);
+            chatMessages.appendChild(messageDiv);
+        
+            document.getElementById('user-query').value = '';
+        
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+    </script>
+    
+</body>
+
+</html>
