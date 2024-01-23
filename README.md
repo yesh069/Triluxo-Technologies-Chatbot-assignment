@@ -19,7 +19,7 @@ This project demonstrates the integration of a chatbot with course recommendatio
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/ChatGPT-Flask-Chatbot.git
+   git clone https://github.com/yesh069/Triluxo-Technologies-Chatbot-assignment.git
    ```
 
 2. **Install dependencies:**
